@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Inicial</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    a{
+        text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <header>
+    <span class="title">Product List</span>
+    <form action="/create" method="POST">
+      <input type="text" name="title" placeholder="Produto">
+      <input type="number" name="price" placeholder="Valor R$">
+      <button type="submit">➕</button>  
+    </form>
+  </header>  
+    <br>
+    <ul class="content">
+        {% for product in products %}
+            <li class="card">
+                <form action="/update/{{ loop.index0 }}" method="POST">
+
+                    <input 
+                        name="title" 
+                        value="{{ product['title'] }}">
+                        <input 
+                        name="price" 
+                        value="{{ product['price'] }}">
+                    <button type="submit">✎</button> 
+                  <div class="action">
+                    <a href="/delete/{{ loop.index0 }}">❌</a>
+                  </div>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>
