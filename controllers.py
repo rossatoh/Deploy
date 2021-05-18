@@ -1,21 +1,21 @@
 from flask import Flask, render_template, request, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import Todo, User, db
+from models import Loja, User, db
 
 class TodoController():
   def index():
     if 'user_id' not in session:
         return redirect('/login')
     user_id = session['user_id']
-    todos = Todo.query.filter_by(user_id=user_id).all()
-    return render_template('index.html', todos=todos)
+    loja = Loja.query.filter_by(user_id=user_id).all()
+    return render_template('index.html', loja=loja)
 
   def create():
     if 'user_id' not in session:
         return redirect('/login')
     user_id = session['user_id']
     title = request.form.get('title')
-    new_todo = Todo(title=title, complete=False, user_id=user_id)
+    new_todo = Loja(title=title, complete=False, user_id=user_id)
     db.session.add(new_todo)
     db.session.commit()
     flash('Todo criado com suceso', 'success')
@@ -24,7 +24,7 @@ class TodoController():
   def delete(id):
     if 'user_id' not in session:
         return redirect('/login')
-    todo = Todo.query.filter_by(id=id).first()
+    todo = Loja.query.filter_by(id=id).first()
     db.session.delete(todo)
     db.session.commit()
     flash('Todo deletado com sucesso', 'success')
@@ -33,8 +33,8 @@ class TodoController():
   def complete(id):
     if 'user_id' not in session:
         return redirect('/login')
-    todo = Todo.query.filter_by(id=id).first()
-    todo.complete = True
+    todo = Loja.query.filter_by(id=id).first()
+    Loja.complete = True
     db.session.commit()
     return redirect('/')
   
@@ -42,8 +42,8 @@ class TodoController():
     if 'user_id' not in session:
         return redirect('/login')
     title = request.form.get('title')
-    todo = Todo.query.filter_by(id=id).first()
-    todo.title = title
+    todo = Loja.query.filter_by(id=id).first()
+    Loja.title = title
     db.session.commit()
     return redirect('/')
   
